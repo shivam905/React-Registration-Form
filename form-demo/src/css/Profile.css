@@ -1,0 +1,33 @@
+
+label {
+    width: 100%;
+    padding: 2px 20px;
+    margin: 8px 0;
+    font-size: 13px;
+    text-align: left;
+
+  }
+
+  .login
+  {
+    background-color:rgb(217, 233, 235);
+  }
+
+  table{
+    
+    margin: auto;  
+  
+    padding: 10px;
+    text-align: center;
+
+  }
+
+  body{
+    background-color:rgb(217, 233, 235);
+}
+td{
+    text-align: left;
+    font-size: 13px;
+}
+  
+  
