@@ -1,6 +1,5 @@
 import React from "react";
 import { HashRouter as Router, Link } from "react-router-dom";
-//import '../css/StartPage.css';
 
 class UserNavbar extends React.Component {
   render(){

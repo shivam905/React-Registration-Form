@@ -1,6 +1,7 @@
 import React from 'react';
 import '../css/StartPage.css';
-import { HashRouter as Router, Link } from "react-router-dom";
+import Navbar from './Menu/Navbar';
+import SimpleReactValidator from 'simple-react-validator';
 import { createHashHistory } from 'history'
 export const history = createHashHistory()
 
@@ -13,6 +14,7 @@ class SignupForm extends React.Component {
     email: '',
     password: ''
   };
+  this.validator = new SimpleReactValidator();
   
   this.submit = this.submit.bind(this);
   this.handleChange = this.handleChange.bind(this);
@@ -27,75 +29,27 @@ class SignupForm extends React.Component {
   handleSubmit = event => {
     event.preventDefault();
   }
+
   submit() {
-
-
-    if (!this.state.username.length > 0)
-    {
-        alert("Username can't be blank...");
-        return false;
-    }
-    if (!isNaN(this.state.username))
-    {
-        alert("UserName should be in characters");
-        return false;
-    }
-
-    if ((this.state.username.length < 3) || (this.state.username.length > 20 ))
-    {
-        alert("Username should be between 3-20 characters");
-        return false;
-    }
-
-    if (!this.state.email.length > 0)
-    {
-        alert("Please enter your email address.");
-        return false;
-    }
-
-    var reg = /^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i;
-
-        if (reg.test(this.state.email) === false) 
-        {
-            alert('Invalid Email Address');
-            return false;
-        }
-  
-    if (!this.state.password.length > 0)
-    {
-        alert("Please enter a password.");
-        return false;
-    }
-
-    if (this.state.password.length < 6)
-    {
-        alert("Please enter minimum 6 characters");
-        return false;
-    }
-      
-    else{
+    if (this.validator.allValid()) {
       alert ("Registration Successfully done...");
 
-      localStorage.setItem('username', this.state.username);
-      localStorage.setItem('email', this.state.email);
-      localStorage.setItem('password', this.state.password );          
-      history.push('/Login'); 
-      return true;
+       localStorage.setItem('username', this.state.username);
+       localStorage.setItem('email', this.state.email);
+       localStorage.setItem('password', this.state.password );          
+       history.push('/Login'); 
+      } 
+      else {
+      this.validator.showMessages();
+      this.forceUpdate();
+      }
     }
-      
-  } 
 
   render() 
   {
     return (
       <div>
-        <Router>
-      <ul>
-              <li><Link to="/">Home</Link> </li>
-               <li><Link to="/Login">Login</Link> </li>
-               <li><Link to="/Signup" >Signup</Link>  </li> 
-            </ul>
-          </Router>
+        < Navbar />
           <div className="center">
           <h1>Sign Up</h1>
            <form onSubmit={this.handleSubmit}>
@@ -109,8 +63,9 @@ class SignupForm extends React.Component {
                        name="username" 
                        placeholder="Enter username here..." 
                        value={ this.state.username }
-                       onChange={ this.handleChange } 
+                       onChange={ this.handleChange }                      
                      />
+                     {this.validator.message('username', this.state.username, 'required|alpha')}
                    </td>
                  </tr>
                  <tr>
@@ -121,8 +76,9 @@ class SignupForm extends React.Component {
                        name="email" 
                        placeholder="Enter email here..."
                        value={ this.state.email } 
-                       onChange={ this.handleChange } 
+                       onChange={ this.handleChange }
                      />
+                   {this.validator.message('email', this.state.email, 'required|email')}  
                    </td>
                  </tr>
                  <tr>
@@ -135,6 +91,7 @@ class SignupForm extends React.Component {
                        value={ this.state.password } 
                        onChange={ this.handleChange } 
                      />
+                     {this.validator.message('password', this.state.password, 'required|min:6|max:20')}
                    </td>
                  </tr>
                  <tr>

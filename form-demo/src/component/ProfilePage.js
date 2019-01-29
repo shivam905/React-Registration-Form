@@ -1,5 +1,5 @@
 import React from 'react';
-import UserNavbar from './UserNavbar';
+import UserNavbar from './Menu/UserNavbar';
 import '../css/Profile.css';
 
 class ProfilePage extends React.Component {
@@ -11,9 +11,7 @@ class ProfilePage extends React.Component {
           <div>
             <UserNavbar />
              <h1>{username} Profile</h1>
-             <div>
-    
-             
+             <div>            
              <table className="tab" align="center" cellPadding="5px" cellSpacing="2px">
                 <tr>
                   <td><label>Username</label></td>

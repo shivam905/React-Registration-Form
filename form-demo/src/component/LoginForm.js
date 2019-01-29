@@ -1,7 +1,8 @@
 import React from 'react';
-import { HashRouter as Router, Link } from "react-router-dom";
+import SimpleReactValidator from 'simple-react-validator';
 import '../css/LoginForm.css';
 import { createHashHistory } from 'history'
+import Navbar from './Menu/Navbar';
 export const history = createHashHistory()
 
 
@@ -12,6 +13,7 @@ class LoginForm extends React.Component {
         email: '',
         password: ''
       };
+      this.validator = new SimpleReactValidator();
       
       this.submit = this.submit.bind(this);
       this.handleChange = this.handleChange.bind(this);
@@ -28,34 +30,8 @@ class LoginForm extends React.Component {
       var useremail = localStorage.getItem('email');
       var userpassword = localStorage.getItem('password');
 
-      if (!this.state.email.length > 0)
-    {
-        alert("Please enter your email address.");
-        return false;
-    }
-
-    var reg = /^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i;
-
-        if (reg.test(this.state.email) === false) 
-        {
-            alert('Invalid Email Address');
-            return false;
-        }
-  
-    if (!this.state.password.length > 0)
-    {
-        alert("Please enter a password.");
-        return false;
-    }
-
-    if (this.state.password.length < 6)
-    {
-        alert("Please enter minimum 6 characters");
-        return false;
-    }
-        
-      else{
-
+      if (this.validator.allValid()) 
+      {
         if (useremail === this.state.email && userpassword === this.state.password) 
         {       
           alert ("Login Successfull");    
@@ -63,13 +39,16 @@ class LoginForm extends React.Component {
         } 
         else if(this.state.email !== useremail){
           alert ("Data Not Found");         
-          return true;
-
+          return false;
         }
         else{
           alert ("you enter wrong details");         
-          return true;
+          return false;
         }
+      } 
+      else {
+      this.validator.showMessages();
+      this.forceUpdate();
       }
     }
    
@@ -78,13 +57,7 @@ class LoginForm extends React.Component {
     return (
       <body>
         <div className="login">
-          <Router>
-          <ul>
-              <li><Link to="/">Home</Link> </li>
-               <li><Link to="/Login">Login</Link> </li>
-               <li><Link to="/Signup">Signup</Link>  </li> 
-            </ul>
-            </Router>
+         < Navbar />
           <div className="center">
           <h1>Log In</h1>
             <table className="tab" align="center">
@@ -98,6 +71,7 @@ class LoginForm extends React.Component {
                       value={ this.state.email } 
                       onChange={ this.handleChange } 
                     />
+                      {this.validator.message('email', this.state.email, 'required|email')}  
                   </td>
                 </tr>
                 <tr>
@@ -110,6 +84,7 @@ class LoginForm extends React.Component {
                       value={ this.state.password } 
                       onChange={ this.handleChange } 
                     />
+                    {this.validator.message('password', this.state.password, 'required|min:6|max:20')}
                   </td>
                 </tr>
                 <tr>

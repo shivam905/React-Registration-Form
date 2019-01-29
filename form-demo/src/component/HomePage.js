@@ -1,5 +1,5 @@
 import React from 'react';
-import UserNavbar from './UserNavbar';
+import UserNavbar from './Menu/UserNavbar';
 class HomePage extends React.Component {
     render() 
     {
